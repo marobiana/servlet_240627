@@ -24,6 +24,7 @@ public class GetMethodQuiz08 extends HttpServlet {
 		// request params
 		String keyword = request.getParameter("keyword");
 		
+		
 		List<String> list = new ArrayList<>(Arrays.asList(
 		        "강남역 최고 맛집 소개 합니다.", 
 		        "오늘 기분 좋은 일이 있었네요.", 
@@ -37,7 +38,13 @@ public class GetMethodQuiz08 extends HttpServlet {
 		for (int i = 0; i < list.size(); i++) { // 0 ~ 4
 			String text = list.get(i);
 			if (text.contains(keyword)) {
-				out.print(text + "<br>");
+				// 맛집 -> <b>맛집</b>
+				// 1) 
+				//text = text.replace(keyword, "<b>" + keyword + "</b>");
+				
+				// 2)
+				String[] words = text.split(keyword); // 0, 1
+				out.print(words[0] + "<b>" + keyword + "</b>" + words[1] + "<br>");
 			}
 		}
 		
