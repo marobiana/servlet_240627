@@ -158,7 +158,7 @@ footer {height:200px;}
 					%>
 						<tr>
 							<td><%= music.get("id") %></td>
-							<td><a href="/lesson02/quiz10_1.jsp"><%= music.get("title") %></a></td>
+							<td><a href="/lesson02/quiz10_1.jsp?id=<%= music.get("id") %>"><%= music.get("title") %></a></td>
 							<td><%= music.get("album") %></td>
 						</tr>
 					<%
