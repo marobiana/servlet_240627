@@ -69,13 +69,19 @@ for (Map<String, Object> book : list) {
 	}
 }
 
-out.print(target);
+//out.print(target);
 %>
 
 	<div class="container">
 		<div class="d-flex">
-			<div></div>
-			<div></div>
+			<div>
+				<img src="<%= target.get("image") %>" alt="책 표지" width="300">
+			</div>
+			<div>
+				<div class="display-1 font-weight-bold"><%= target.get("title") %></div>
+				<span class="display-3 text-info d-block"><%= target.get("author") %></span>
+				<span class="display-4 text-secondary d-block"><%= target.get("publisher") %></span>
+			</div>
 		</div>
 	</div>
 </body>
