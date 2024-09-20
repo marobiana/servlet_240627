@@ -90,17 +90,32 @@ musicList.add(musicInfo);
 %>
 
 <%
-	int id = Integer.valueOf(request.getParameter("id"));
 	Map<String, Object> target = null; // 상세 정보를 보여줄 맵
-	
-	for (Map<String, Object> music : musicList) {
-		if (id == (int)music.get("id")) {
-			target = music;
-			break;
+
+	// 1. 목록에서 클릭하고 들어오는 경우(a 태그) - id 파라미터
+	if (request.getParameter("id") != null) {
+		int id = Integer.valueOf(request.getParameter("id"));
+		
+		for (Map<String, Object> music : musicList) {
+			if (id == (int)music.get("id")) {
+				target = music;
+				break;
+			}
 		}
 	}
 	
-	out.print(target);
+	// 2. 상단 헤더에서 검색한 경우(form 태그) - title 파라미터
+	if (request.getParameter("title") != null) {
+		String title = request.getParameter("title");
+		for (Map<String, Object> music : musicList) {
+			if (music.get("title").equals(title)) {
+				target = music;
+				break;
+			}
+		}
+	}
+	
+	//out.print(target);
 %>
 	<div class="container">
 		<header class="d-flex align-items-center">
@@ -111,12 +126,14 @@ musicList.add(musicInfo);
 			
 			<%-- 검색 영역 --%>
 			<div class="col-10">
-				<div class="input-group">
-					<input type="text" class="form-control col-5">
-					<div class="input-group-append">
-						<button class="btn btn-info" type="button">검색</button>
+				<form method="get" action="/lesson02/quiz10_1.jsp">
+					<div class="input-group">
+						<input type="text" name="title" class="form-control col-5">
+						<div class="input-group-append">
+							<button class="btn btn-info" type="submit">검색</button>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</header>
 		<nav>
@@ -130,6 +147,9 @@ musicList.add(musicInfo);
 		</nav>
 		
 		<section class="contents">
+		<%
+			if (target != null) {
+		%>
 			<%-- 곡 정보 --%>
 			<div class="d-flex border border-success p-3">
 				<%-- 이미지 --%>
@@ -140,18 +160,18 @@ musicList.add(musicInfo);
 				<div class="ml-3">
 					<div class="display-4"><%= target.get("title") %></div>
 					<div class="font-weight-bold text-success"><%= target.get("singer") %></div>
-					<div class="d-flex">
+					<div class="d-flex mt-3">
 						<div>
 							<div>앨범</div>
 							<div>재생시간</div>
 							<div>작곡가</div>
 							<div>작사가</div>
 						</div>
-						<div>
-							<div>-</div>
-							<div>-</div>
-							<div>-</div>
-							<div>-</div>
+						<div class="ml-4">
+							<div><%= target.get("album") %></div>
+							<div><%= (int)target.get("time") / 60 %> : <%= (int)target.get("time") % 60 %></div>
+							<div><%= target.get("composer") %></div>
+							<div><%= target.get("lyricist") %></div>
 						</div>
 					</div>
 				</div>
@@ -163,6 +183,11 @@ musicList.add(musicInfo);
 				<hr>
 				가사 정보 없음
 			</div>
+		<%
+			} else {
+				out.print("정보 없음");
+			}
+		%>
 		</section>
 		
 		<footer>
